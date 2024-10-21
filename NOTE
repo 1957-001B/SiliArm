@@ -1,0 +1,18 @@
+Null-free Shellcode
+==
+
+
+
+Increment By 1      0x000000001
+^^^^^^^^              ^^^^^^^^
+Alternate           Null 
+
+
+^^^^^^^^^          ^^^^^^^^
+Good               Bad
+
+
+
+
+
+
