@@ -40,6 +40,9 @@ class Instruction:
         if len(self.instruction.split()) > 1:
             self.args = [arg.strip()
                          for arg in self.instruction.split()[1].split(',')]
+        else:
+            raise ValueError(f" Assembly Failed Unkown Instruction: '{
+                             self.instruction}' \n Did you provide Operands?")
 
         return self.mnemonic, self.args
 
@@ -57,7 +60,7 @@ class Instruction:
                 return OpCode.ADD
             case _:
                 raise Exception(
-                    "f {self.mnemonic} is not a recognized mnemonic")
+                    f" {self.mnemonic} is not a recognized mnemonic")
 
     def get_args(self): self.args
     def get_mnemonic(self): self.mnemonic
@@ -70,16 +73,19 @@ class Assembler:
 
     def __init__(self, path) -> None:
         self.src = path
-        self.current_instruction = self.get_instruction()
+        self.instructions = self.get_instructions()
 
-    def get_instruction(self):
+    def get_instructions(self):
         '''Obvious'''
+
         with self.src.open("+r", encoding="utf-8") as f:
             src = f.read().splitlines()
-
+            instructions = []
             for line in src:
-                print(vars(Instruction(line)))
-                return Instruction(line)
+                l = vars(Instruction(line))
+                print(l)
+                instructions.append(l)
+            return instructions
 
     def encode(self):
         '''
