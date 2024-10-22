@@ -11,13 +11,14 @@ class OpCode(Enum):
     '''
     Class to tidy up where Opcodes are defined
     '''
-    MOV = 0x00
-    JMP = 0x00
+    ORR = 0x00000
+    B = 0x00101
+    ADD = 0x00001
 
 
-class Insruction:
+class Instruction:
     '''
-    Each Instruction Has mnemonic
+    Each Instruction Has mnemonic, opcode, args,parsed
     '''
     mnemonic: str
     opcode: OpCode
@@ -26,7 +27,9 @@ class Insruction:
     def __init__(self, instruction):
         self.instruction = instruction
         self.parsed = self.parse()
+        self.mnemonic = self.parse()[0]
         self.opcode = self.get_opcode()
+        self.args = []
 
     def parse(self):
         '''
@@ -46,18 +49,68 @@ class Insruction:
         '''
 
         match self.mnemonic:
-            case ["MOV"]:
-                return OpCode.MOV
-            case ["JMP"]:
-                return OpCode.JMP
+            case "ORR":
+                return OpCode.ORR
+            case "B":
+                return OpCode.B
+            case "ADD":
+                return OpCode.ADD
+            case _:
+                raise Exception(
+                    "f {self.mnemonic} is not a recognized mnemonic")
+
+    def get_args(self): self.args
+    def get_mnemonic(self): self.mnemonic
+
+
+class Assembler:
+    '''
+    The Assembler
+    '''
+
+    def __init__(self, path) -> None:
+        self.src = path
+        self.current_instruction = self.get_instruction()
+
+    def get_instruction(self):
+        '''Obvious'''
+        with self.src.open("+r", encoding="utf-8") as f:
+            src = f.read().splitlines()
+
+            for line in src:
+                print(vars(Instruction(line)))
+                return Instruction(line)
 
     def encode(self):
         '''
-        Encode to machine code
+        Mnemonic --> Opcode (machine code)
+        Args --> Operand (machine code)
         '''
+
+        if self.current_mode == "OPCODE":
+
+            match self.opcode:
+                case OpCode.ORR:
+                    encoded_string: str = OpCode.ORR.value + self.encoded_args
+
+                case OpCode.B:
+                    encoded_string: str = OpCode.B.value + self.encoded_args
+
+                case OpCode.ADD:
+                    encoded_string: str = OpCode.ADD.value + self.encoded_args
+
+                case _:
+                    raise Exception(
+                        "This case is not possible, if it is. You are special")
+
         return 0
 
-# Testing
+
+if __name__ == '__main__':
+    path = Path("./example.s")
+    Assembler(path)
+
+# Tests
 
 
 class AssemblerTests(unittest.TestCase):
@@ -69,13 +122,8 @@ class AssemblerTests(unittest.TestCase):
         '''
         Simple sense check
         '''
-        test_instruction1 = Insruction("MOV W1,W2")
-        test_instruction2 = Insruction("JMP 0x89AB")
+        test_instruction1 = Instruction("MOV W1,W2")
+        test_instruction2 = Instruction("JMP 0x89AB")
 
         self.assertEqual(test_instruction1.parsed, ('MOV', ['W1', 'W2']))
         self.assertEqual(test_instruction2.parsed, ('JMP', ['0x89AB']))
-
-
-if __name__ == '__main__':
-    unittest.main()
-    file = Path("./example.s")
