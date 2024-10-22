@@ -48,9 +48,8 @@ class AssemblerTests(unittest.TestCase):
         self.src = Path("./test.s")
 
     def test_parse(self):
-        with self.src.open() as f:
-            test_instruction1 = Insruction("MOV W1,W2")
-            test_instruction2 = Insruction("JMP 0x89AB")
+        test_instruction1 = Insruction("MOV W1,W2")
+        test_instruction2 = Insruction("JMP 0x89AB")
 
         self.assertEqual(test_instruction1.parsed, ('MOV', ['W1', 'W2']))
         self.assertEqual(test_instruction2.parsed, ('JMP', ['0x89AB']))
