@@ -8,22 +8,4 @@ Along with a bit of exploration into shell-code on osx
 Notes
 ===
 
-
-
-
-How do we exploit using Assembly.
-===
-Null-free Shellcode
-==
-
-
-
-Increment By 1      0x000000001
-^^^^^^^^              ^^^^^^^^
-Alternate           Null 
-
-
-^^^^^^^^^          ^^^^^^^^
-Good               Bad
-
-
+How we exploit things using our Assembly knowledge.
