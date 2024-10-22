@@ -1,0 +1,2 @@
+MOV W1,W2
+JMP 0x89AB
