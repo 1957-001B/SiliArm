@@ -55,19 +55,20 @@ class Insruction:
         '''
         Encode to machine code
         '''
-        pass
-
+        return 0
 
 # Testing
+
+
 class AssemblerTests(unittest.TestCase):
     '''
     Unit tests for the assembler
     '''
 
-    def __init__(self, methodName: str = "runTest") -> None:
-        super().__init__(methodName)
-
     def test_parse(self):
+        '''
+        Simple sense check
+        '''
         test_instruction1 = Insruction("MOV W1,W2")
         test_instruction2 = Insruction("JMP 0x89AB")
 
@@ -77,3 +78,4 @@ class AssemblerTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    file = Path("./example.s")
