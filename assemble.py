@@ -27,24 +27,32 @@ class Instruction:
     def __init__(self, instruction):
         self.instruction = instruction
         self.parsed = self.parse()
+
+        if self.parse == [0,0]: return 0
+
         self.mnemonic = self.parse()[0]
         self.opcode = self.get_opcode()
         self.args = []
+
 
     def parse(self):
         '''
         Parse the Instruction
         '''
-        self.mnemonic = self.instruction.split()[0]
 
-        if len(self.instruction.split()) > 1:
-            self.args = [arg.strip()
-                         for arg in self.instruction.split()[1].split(',')]
+        if self.instruction.split()[0] == ";": return [0,0]
+
         else:
-            raise ValueError(f" Assembly Failed Unkown Instruction: '{
-                             self.instruction}' \n Did you provide Operands?")
+            self.mnemonic = self.instruction.split()[0]
 
-        return self.mnemonic, self.args
+            if len(self.instruction.split()) > 1:
+                self.args = [arg.strip()
+                            for arg in self.instruction.split()[1].split(',')]
+            else:
+                raise ValueError(f" Assembly Failed Unkown Instruction: '{
+                                self.instruction}' \n Did you provide Operands?")
+
+            return self.mnemonic, self.args
 
     def get_opcode(self):
         '''

@@ -6,5 +6,3 @@ B 0x4000
 ORR X2, XZR, #100
 ADD X2, X2, #1
 B 0x1000
-Br  172
-TZ
