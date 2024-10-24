@@ -28,29 +28,30 @@ class Instruction:
         self.instruction = instruction
         self.parsed = self.parse()
 
-        if self.parse == [0,0]: return 0
+        if self.parse == [0, 0]:
+            return 0
 
         self.mnemonic = self.parse()[0]
         self.opcode = self.get_opcode()
         self.args = []
-
 
     def parse(self):
         '''
         Parse the Instruction
         '''
 
-        if self.instruction.split()[0] == ";": return [0,0]
+        if self.instruction.split()[0] == ";":
+            return [0, 0]
 
         else:
             self.mnemonic = self.instruction.split()[0]
 
             if len(self.instruction.split()) > 1:
                 self.args = [arg.strip()
-                            for arg in self.instruction.split()[1].split(',')]
+                             for arg in self.instruction.split()[1].split(',')]
             else:
                 raise ValueError(f" Assembly Failed Unkown Instruction: '{
-                                self.instruction}' \n Did you provide Operands?")
+                                 self.instruction}' \n Did you provide Operands?")
 
             return self.mnemonic, self.args
 
@@ -83,6 +84,10 @@ class Assembler:
         self.src = path
         self.instructions = self.get_instructions()
 
+    def assemble(self):
+
+        return 0
+
     def get_instructions(self):
         '''Obvious'''
 
@@ -95,12 +100,11 @@ class Assembler:
                 instructions.append(l)
             return instructions
 
-    def encode(self):
+    def encode(self, type):
         '''
         Mnemonic --> Opcode (machine code)
         Args --> Operand (machine code)
         '''
-
         if self.current_mode == "OPCODE":
 
             match self.opcode:
