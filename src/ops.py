@@ -1,7 +1,6 @@
 from enum import Enum
 
 
-
 class OpCodes(Enum):
     '''
     Class to tidy up where Opcodes are defined for 64-bit operations, first only essential opcodes will be implemented.
@@ -13,11 +12,18 @@ class OpCodes(Enum):
     EOR = 0xCA000000
     LSL = 0x9AC02000
     LSR = 0x9AC02400
-    MOV = 0xAA0003E0  # This is actually an alias for ORR Xd, XZR, Xm e.g ORR X0, XZR, #5  | ORR X1, XZR, X0 for register to register 
-    B   = 0x14000000
-    BL  = 0x94000000
+    MOV = 0xAA0003E0  # This is actually an alias for ORR Xd, XZR, Xm e.g ORR X0, XZR, #5  | ORR X1, XZR, X0 for register to register
+    B = 0x14000000
+    BL = 0x94000000
+
 
 class Registers(Enum):
+
+    def __new__(cls, *args):
+
+        obj = object.__new__(cls)
+        return obj
+
     # 64-bit Registers
     X0 = 0
     X1 = 1
@@ -50,5 +56,10 @@ class Registers(Enum):
     X28 = 28
     X29 = 29  # Frame pointer
     X30 = 30  # Link register
-    SP = 31   # Stack pointer
-    XZR = 32 # Zero register (when used as source)
+    SP = ("SP", 31) # Stack pointer
+    XZR = ("XZR", 31) # Zero register (when used as source)
+
+    @property
+    def register_number(self):
+        return self._value_
+   
