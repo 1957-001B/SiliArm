@@ -1,19 +1,24 @@
 from pathlib import Path
+from enum import Enum
+from ops import OpCodes
+from ops import Registers
 
-def tokenize(filepath):
+
+def lex_file(filepath):
     with filepath.open("+r", encoding="utf-8") as f:
             n=0
             src = f.read().splitlines()
             instructions = []
             for line in src:
-                print(line)
                 n+=1
-                l = parse(line,n)
-                print(l)
+                l = lex_line(line,n)
                 instructions.append(l)
-            
 
-def parse(line, n):
+    return instructions
+    
+
+
+def lex_line(line, n):
         '''
         Parse the Instruction
 
@@ -34,10 +39,33 @@ def parse(line, n):
         if line.split()[0] == ";":
             return None 
 
-
         else:
             tokens = [token.strip(',') for token in line.split(';')[0].strip().split()]
-            op = tokens[0]
-            args = tokens[1:]
+            line_code=[]
+            for token in tokens:
+                match token:
 
-        return op, args
+                    case token if token in OpCodes._member_names_:
+                        op = ("INSTRUCTION", OpCodes[token])
+                        line_code.append(op)
+
+                    case Registers.XZR._name_:
+                        print("yo")
+                        reg = ("REGISTER", Registers.XZR)
+                        line_code.append(reg)
+
+                    case  Registers.SP._name_:
+                        print("bro")
+                        reg = ("REGISTER", Registers.SP)
+                        line_code.append(reg)
+
+                    case token if token in Registers._member_names_:
+                        reg = ("REGISTER", Registers[token])
+                        line_code.append(reg)
+
+                    case _:
+                        # this means its an argument or a typo 
+                        pass
+
+        print(line_code)
+                
