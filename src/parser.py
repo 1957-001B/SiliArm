@@ -88,7 +88,7 @@ class Parser:
                             value = int(token[3:], 16)
                         else:  # Decimal number
                             value = int(token[1:])
-                            line_code.append(("IMMEDIATE", value))
+                        line_code.append(("IMMEDIATE", value))  # Fixed indentation!
                     except ValueError:
                         pass
                 case token if token.isdigit():  # Immediate values

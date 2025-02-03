@@ -2,22 +2,14 @@ from enum import Enum
 
 
 class OpCodes(Enum):
-    """
-    Class to tidy up where Opcodes are defined for 64-bit operations, first only essential opcodes will be implemented.
-    """
-
-    ORR = 0xAA000000
-    ADD = 0x8B000000
-    SUB = 0xCB000000
-    AND = 0x8A000000
-    EOR = 0xCA000000
-    LSL = 0x9AC02000
-    LSR = 0x9AC02400
-    MOV = 0xAA0003E0  # This is actually an alias for ORR Xd, XZR, Xm e.g ORR X0, XZR, #5  | ORR X1, XZR, X0 for register to register
+    # Base opcodes for 64-bit operations
+    ORR_IMM = 0xB2400000  # ORR with immediate
+    ORR_REG = 0xAA000000  # ORR with register
+    ADD_IMM = 0x91000000  # ADD with immediate 
+    ADD_REG = 0x8B000000  # ADD with register
+    MOV_IMM = 0xD2800000  # MOV with immediate
     SVC = 0xD4000001
     B = 0x14000000
-    BL = 0x94000000
-
 
 class Registers(Enum):
 
